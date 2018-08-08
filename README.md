@@ -68,12 +68,13 @@ Here is a template you can start with:
 ```
 ---
 layout: work
-title:  "Eye Guy Ball"
-tagged: awareness, eyeguy, cute
+title:  "Circle Packing"
+tags: circles, texture, cute
+categories: texture
 date:   2018-08-08 12:54:46
-author: Natacha Sochat
-website: http://www.natacha.net
-image: 2018/eyeguy-nsochat.jpg
+author: Tim Holman
+website: https://generativeartistry.com/tutorials/circle-packing/
+image: 2018/circle-packing.jpg
 ---
 
 You can write a description here, if you like!
