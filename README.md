@@ -61,8 +61,16 @@ cd opensource-art
 ```
 
 Next, copy one of the current works pages under [_works](docs/_works), and give it a unique name that is all lowercase
-and doesn't have any special characters. Fill in the very minimal metadata for your contribution. All
-fields are optional except for the layout, which you should not change from "work."
+and doesn't have any special characters. The following fields have suggestions for their content:
+
+ - *categories* should be one of texture or work.
+ - *image* must be defined, as some subfolder path under [assets/images/](docs/assets/images). We recommend that you put the image in the folder for the corresponding year, and that it is named based on `<artist>-<title>.<extension>` (see example below).
+ - *layout* you must leave as "work"
+ - *tags* are up to you! These should describe your contribution, separated by commas.
+ - *date* should be in the format YYYY-MM-DD HH-MM:SS
+ - *author* is your name (or alias), although it's not required
+ - *affiliation* (not shown in the example) can be your institution, or an affiliation that you have
+
 Here is a template you can start with:
 
 ```
@@ -74,7 +82,7 @@ categories: texture
 date:   2018-08-08 12:54:46
 author: Tim Holman
 website: https://generativeartistry.com/tutorials/circle-packing/
-image: 2018/circle-packing.jpg
+image: 2018/tim-holman-circle-packing.jpg
 ---
 
 You can write a description here, if you like!
@@ -83,5 +91,8 @@ You can write a description here, if you like!
 The image path should be under the root "assets/img" in the repository. Thus for the above:
 
 ```bash
-2018/eye-guys-sochat.png --> assets/images/2018/eye-guys-sochat.png
+2018/tim-holman-circle-packing.jpg --> assets/images/2018/tim-holman-circle-packing.jpg
 ```
+
+Finally, notice that the (more verbose if you like) description is at the bottom, under everything. Feel
+free to write as little or as much as you like here!
