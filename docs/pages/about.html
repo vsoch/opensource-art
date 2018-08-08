@@ -1,0 +1,35 @@
+---
+layout: about
+title: ""
+permalink: /about/
+---
+
+<div class="container mtb">
+    <div class="row">
+        <div class="col-lg-6">
+            <img class="img-responsive" src="{{ "/assets/logo.jpg" | prepend: site.baseurl }}" alt="">
+        </div>
+        <div class="col-lg-6">
+            <h4 style="color:#777">What is Open Source Art?</h4>
+                <p style="color:#999">While traditionally used for programming, this reposity combines open source development with community artistic contributions to create the first automated, programatically and manually generated gallery.</p>
+                <hr>
+                <h4 style="color:#777">Background</h4>
+                <p style="color:#999">There is typically a strong distinction between things that are made by hand, and by machine. 
+It's also more likely the case that you see artist work attributed to one or a few individuals - the paintings in your favorite
+gallery are done by one individual, or it's perhaps a collaboration between a small group.</p>
+                <p style="color:#999">Bring in open source. Open source is a powerful framework with under which many eyes can make tiny contributions to develop highly complex systems. In the context of programming, this means that a group of developers opens up their code base for contributions from the community, and many eyes on the code squash the bugs. </p>
+                <hr>
+                <h4 style="color:#777">How does this work?</h4>
+                <p style="color:#999">Under this same model, many small artistic contributions can create unexpected beauty.</p><br>
+                <p>1. The Human Component</p>
+                <p style="color:#999">The base of the entire gallery, whether it be code that drives its generation or the human hand, starts with a human component. How does this work?
+<p style="color:#999">Any member of the community can contribute a texture, a graphic, or digital piece. The contribution is done via a pull request (or contact of one of the Open Source Art maintainers, in the case the artist is not familiar with Github). Using Github means that the contribution (if necessary) can be discussed and reviewed, and then finally the contribution is added to the library housed in the repository.</p><br>
+                <p>2. The Digital Gallery</p>
+                <p style="color:#999">From the human component, we have a version controlled collection of community contributions. Each carries with it  metadata about the artist and (if one exists) a title and description. Here is where the machine, and concepts from software engineering like version control, continuous integration, and machine learning come into play! We use these technologies to automate the process of generating new works from the existing.</p>
+
+               <p style="color:#999">Each day, a set of textures (or derivations from them) are randomly chosen during an automated testing step in a continuous integration service. Machine learning is performed via a reproducible container to generate a new work. The new work is saved, and added programatically back to the gallery.</p><br>
+               <p>3. The Open Source Art Story</p>
+                   <p style="color:#999">Over time, the gallery grows in size and complexity. We generate a new image each day, and so the earlier pieces become part of the later ones. The earliest contributions start the development of a story, and community members can contribute new textures (or similar) at any frequency to continue developing the story.</p>
+        </div>
+    </div><! --/row -->
+</div><! --/container -->

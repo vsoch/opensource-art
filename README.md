@@ -58,7 +58,7 @@ git clone https://www.github.com/<username>/opensource-art
 cd opensource-art
 ```
 
-Next, copy one of the current works pages under [_works](_works), and give it a unique name that is all lowercase
+Next, copy one of the current works pages under [_works](docs/_works), and give it a unique name that is all lowercase
 and doesn't have any special characters. Fill in the very minimal metadata for your contribution. All
 fields are optional except for the layout, which you should not change from "work."
 Here is a template you can start with:
@@ -66,12 +66,12 @@ Here is a template you can start with:
 ```
 ---
 layout: work
-title:  "Eye Guys"
-date:   2017-08-29 16:54:46
-author: Vanessa Sochat
-image: robots/robot1.png
-tagged: public, academic, hpc
-affiliation: Stanford University
+title:  "Eye Guy Ball"
+tagged: awareness, eyeguy, cute
+date:   2018-08-08 12:54:46
+author: Natacha Sochat
+website: http://www.natacha.net
+image: 2018/eyeguy-nsochat.jpg
 ---
 
 You can write a description here, if you like!
