@@ -1,5 +1,7 @@
 # Open Source Art
 
+![docs/assets/logo.jpg](docs/assets/logo.jpg)
+
 [![CircleCI](https://circleci.com/gh/vsoch/opensource-art.svg?style=svg)](https://circleci.com/gh/vsoch/opensource-art)
 
  - [What is OpenSource Art](#what-is-opensource-art): Read here if you want to learn about the gallery generated and housed here.
