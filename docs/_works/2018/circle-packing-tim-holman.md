@@ -6,7 +6,7 @@ categories: texture
 date:   2018-08-08 12:54:46
 author: Tim Holman
 website: https://generativeartistry.com/tutorials/circle-packing/
-image: 2018/circle-packing.jpg
+image: 2018/tim-holman-circle-packing.jpg
 ---
 
 Hello, I'm a bunch of circles! 
