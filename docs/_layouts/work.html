@@ -24,8 +24,8 @@ layout: default
             <h4>Work Details</h4>
             <div style="padding-bottom:20px" class="hline"></div>
             {% if page.date %}<p><b>Date:</b> {{ page.date | date: "%b %-d, %Y" }}</p>{% endif %}
-            {% if page.aithor %}<p><b>Contributor:</b> {{ page.author }}</p>{% endif %}
-            {% if page.tagged %}<p><b>Tags:</b> {{ page.tagged }}</p>{% endif %}
+            {% if page.author %}<p><b>Contributor:</b> {{ page.author }}</p>{% endif %}
+            {% if page.tags %}<p><b>Tags:</b> {{ page.tagged }}</p>{% endif %}
             {% if page.affiliation %}<p><b>Affiliation:</b> {{ page.affiliation }}</p>{% endif %}
         </div>
         <div class="col-lg-4 col-lg-offset-1">
