@@ -68,10 +68,9 @@ class TestOpenSourceArt(unittest.TestCase):
         markdowns = [work['uid'] for md, work in self.lookup.items()]
 
         # Gallery is a set of folders named by uid
-        if os.path.exists('%s/_gallery' %self.base):
-            gallery = os.listdir('%s/_gallery' %self.base)
-        else:
-            gallery = []
+        gallery = requests.get('https://vsoch.github.io/opensource-art/works.json').text
+        gallery = [x.replace('/assets/images/', '') for x in gallery.split('\n') if x]
+        gallery = [x.split('/')[-1].replace('.jpg','') for x in gallery]
 
         # Works without folders are not yet in the gallery
         self.added = set(markdowns).difference(gallery)
