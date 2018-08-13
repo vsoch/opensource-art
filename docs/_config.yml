@@ -20,11 +20,15 @@ colors:  #in hex code if not noted else
   footer_heading: "#777"
   footer_content: "#bfc9d3"
 
-# Making projects separate from posts
+# Gallery --> robot art
+# Works --> human contributions
 collections:
   works:
     output: true
     permalink: /works/:title/
+  gallery:
+    output: true
+    permalink: /gallery/:title/
   questions:
     output: true
     permalink: /questions/:title/

@@ -101,7 +101,7 @@ testing: &testing
     name: Test contributed metadata
     no_output_timeout: 60m
     command: |
-        echo "Containershare!"
+        echo "OpenSource Art!"
         cd /tmp/src && ~/miniconda3/bin/python -m unittest tests.test_works
         echo "Previewing Works Metadata"
         cat ${OPENSOURCEART_NEW_WORKS}
@@ -203,7 +203,7 @@ jobs:
             source ${BASH_ENV}
             if [[ -n "${GITHUB_EMAIL:-}" ]];
                 then
-                    echo "=== Deploying manifests to Github Pages ==="
+                    echo "=== Deploying Gallery to Github Pages ==="
                     echo "Generating Container Manifest"
                     echo "1. Checking out Github pages branch"
                     ssh-keyscan -H github.com >> ~/.ssh/known_hosts
@@ -212,42 +212,16 @@ jobs:
                     # either checkout github pages, or create orphan
                     git checkout gh-pages || git checkout --orphan gh-pages
                     # Save all previous tags, so we don't pull and re-generate
-                    mkdir -p ../out-old
-                    if ls *.json 1> /dev/null 2>&1; then
-                        cp *.json ../out-old/
-                    fi
+                    cp -R ${PWD} ../out-old
                     git rm -rf .
                     # ensure that github pages are ignored
                     mkdir -p .circleci && cp -a ../.circleci/. .circleci/.
                     # Copy back previous files
-                    if ls ../out-old/*.json 1> /dev/null 2>&1; then
-                        cp ../out-old/*.json ${PWD}
-                    fi
-                    cp .circleci/template.html template.html
-                    # replace container name in index.html
-                    envsubst < template.html > index.html
-                    echo "2. Generating manifest for latest..."
-                    docker inspect ${CONTAINER_NAME}:${DOCKER_TAG} > manifest-latest.json
-                    # We will keep a list of tags
-                    rm -rf tags.json && touch tags.json
-                    for tag in $(curl -L -s "https://registry.hub.docker.com/v2/repositories/${CONTAINER_NAME}/tags?page_size=1024" | jq --raw-output '."results"[]["name"]')
-                      do
-                          # Add the tag to the list
-                          # when manifest doesn't exist, generate it
-                          DOCKER_MANIFEST="manifest-${tag}.json"
-                          if [ ! -f "${DOCKER_MANIFEST}" ];
-                            then
-                              echo "Generating manifest for ${DOCKER_MANIFEST}";
-                              docker pull "${CONTAINER_NAME}:${tag}";
-                              docker inspect "${CONTAINER_NAME}:${tag}" > "${DOCKER_MANIFEST}";
-                              /tmp/bin/container-diff-linux-amd64 analyze "${CONTAINER_NAME}:${tag}" --type=pip --type=file --type=apt --type=history --json > "inspect-${tag}.json";
-                          fi
-                          echo "${tag}" >> tags.json
-                    done
-                    # Copy the inspect to latest
-                    cp "inspect-${DOCKER_TAG}.json" inspect-latest.json
-                    # Write the tags json
-                    # printf '%s\n' "${tags[@]}" | jq -R . | jq -s . > tags.json;
+                    cp -R ../out-old/* ${PWD}
+                    # Add new images to gallery
+                    count=$(cat ${OPENSOURCEART_NEW_WORKS}/dreamy* | wc -l)
+                    echo "Found ${count} new works!"
+                    cp ${OPENSOURCEART_NEW_WORKS}/dreamy* _gallery/
                     git add -A;
                     git commit -m "Automated deployment to GitHub Pages ${CIRCLE_SHA1}" --allow-empty
                     git push origin gh-pages
@@ -255,11 +229,9 @@ jobs:
                 echo "GITHUB_EMAIL not set, skipping manifest deploy to Github pages"
             fi
 
-
 ################################################################################
 # Workflows
 ################################################################################
-
 
 workflows:
   version: 2
