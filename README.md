@@ -51,6 +51,7 @@ Over time, the gallery grows in size and complexity. We generate a new image eac
 # Contribute Your Work
 
 Contributing comes down to submission of a [pull request](https://yangsu.github.io/pull-request-tutorial/) (called a PR) to this repository.
+You can also opt to [fill in an online form](https://vsoch.github.io/opensource-art/contribute) but know that this will take much longer.
 
 ### Manual Generation
 First, the repository, and clone it to your local computer.
