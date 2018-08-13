@@ -37,7 +37,7 @@ dockerenv: &dockerenv
     command: |
         # If not set, define DOCKER_TAG
         if [ ! -n "${DOCKER_TAG:-}" ]; then
-            DOCKER_TAG=0.0.5
+            DOCKER_TAG=0.0.6
         fi
         if [ ! -n "${CONTAINER_NAME:-}" ]; then
             CONTAINER_NAME=vanessa/deepdream
