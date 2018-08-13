@@ -137,11 +137,11 @@ class TestOpenSourceArt(unittest.TestCase):
            We only make it to this test given that all other tests pass!
         '''
 
-         new_works = os.environ.get('OPENSOURCEART_NEW_WORKS', '/tmp/OSART.new')
-         print('New works will be written to %s' %new_works)
-         with open(new_works, 'w') as fh:
-             for work in self.added:
-                 fh.writelines('%s\n' %work['image'])
+        new_works = os.environ.get('OPENSOURCEART_NEW_WORKS', '/tmp/OSART.new')
+        print('New works will be written to %s' %new_works)
+        with open(new_works, 'w') as fh:
+            for work in self.added:
+                fh.writelines('%s\n' %work['image'])
 
 if __name__ == '__main__':
     unittest.main()
