@@ -149,8 +149,7 @@ jobs:
 
   build:
     <<: *defaults
-
-    working_directory: /tmp/opensource-art
+    working_directory: /tmp
     steps:
       - run: *install
       - restore_cache:
