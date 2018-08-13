@@ -16,7 +16,6 @@ defaults: &defaults
   environment:
     - JEKYLL_ENV: production
     - NOKOGIRI_USE_SYSTEM_LIBRARIES: true
-    - OPENSOURCEART_NEW_WORK: /tmp/OSART.new
 
 # Installation
 install: &install
@@ -38,13 +37,18 @@ dockerenv: &dockerenv
     command: |
         # If not set, define DOCKER_TAG
         if [ ! -n "${DOCKER_TAG:-}" ]; then
-            DOCKER_TAG=latest
+            DOCKER_TAG=0.0.2
         fi
         if [ ! -n "${CONTAINER_NAME:-}" ]; then
             CONTAINER_NAME=vanessa/deepdream
         fi
+        if [ ! -n "${OPENSOURCEART_NEW_WORKS:-}" ]; then
+            OPENSOURCEART_NEW_WORKS=/tmp/OSART.new
+        fi
         # export to bash environment
         echo "export DOCKER_TAG=${DOCKER_TAG}" >> ${BASH_ENV}
+        echo "export DOCKER_CONTAINER_NAME=${CONTAINER_NAME}" >> ${BASH_ENV}
+        echo "export OPENSOURCEART_NEW_WORKS=${OPENSOURCEART_NEW_WORKS}" >> ${BASH_ENV}
         cat ${BASH_ENV}
 
 
@@ -88,23 +92,15 @@ githubsetup: &githubsetup
                 fi
         fi
 
-testing: &testing
-    name: Test contributed metadata
+opensourceart: &opensourceart
+    name: Run vanessa/deepdream to generate opensource art
     no_output_timeout: 60m
     command: |
         echo "OpenSource Art!"
         cd /tmp/src && python3 -m unittest tests.test_works
         echo "Previewing Works Metadata"
         cat ${OPENSOURCEART_NEW_WORKS}
-        cat docs/_site/library.json
-
-opensourceart: &opensourceart
-    name: Run vanessa/deepdream to generate opensource art
-    no_output_timeout: 60m
-    command: |
         echo "0. Installing dependencies..."
-        python3 -m venv venv
-        . venv/bin/activate
         echo "DeepDreams are made of cheese, who am I to diss a brie?"
         echo "1. Preparing robot art studio!"
         echo "Working directory is ${PWD}"
@@ -112,12 +108,16 @@ opensourceart: &opensourceart
         echo "2. Identifying new works!"
         cat "${OPENSOURCEART_NEW_WORKS}"
         echo "3. Starting opensource-art container"
-        docker run --name osart -dt "${CONTAINER_NAME}:${DOCKER_TAG}" bash 
+        docker run --name osart  --entrypoint bash -dt "${CONTAINER_NAME}:${DOCKER_TAG}"
+        docker exec osart mkdir -p /data/inputs
         for image in $(cat ${OPENSOURCEART_NEW_WORKS})
             do
+                echo "$image"
                 image_name=$(basename ${image})
-                docker cp $image "osart:/data/inputs/${image_name}"
-                docker exec "${CONTAINER_NAME}:${DOCKER_TAG}" python "/data/inputs/${image_name}"
+                echo "$image_name"
+                echo "docs/assets/images/${image}"
+                docker cp docs/assets/images/$image osart:/data/inputs/${image_name}
+                docker exec osart python /data/inputs/${image_name}
         done
         echo "4. Copying art back to the gallery!"
         mkdir -p /tmp/gallery
@@ -152,7 +152,6 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: *dockerenv
-      - run: *testing
       - run: *opensourceart
       - run: *dockersave
       - persist_to_workspace:
