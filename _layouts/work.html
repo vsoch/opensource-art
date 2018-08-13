@@ -4,7 +4,7 @@ layout: default
 
 <div class="container mt">
     <div class="row">
-
+ 
         <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">  
         <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
 
@@ -12,11 +12,11 @@ layout: default
         <div id="jumbotron" class="jumbotron">
           <div class="container">
             <h1 class="lobster-font">{{ page.title }}</h1>
-            {% if page.website %}<p><a class="btn btn-sm btn-theme" href="{{ page.website }}" role="button">Learn more</a></p>{% endif %}
+            {% if page.website %}<p><a class="btn btn-sm btn-secondary" href="{{ page.website }}" role="button">Learn more</a></p>{% endif %}
           </div>
         </div>
 
-        <div style="margin-top:25px" class="col-lg-5 col-lg-offset-1">
+        <div style="margin-top:25px;" class="col-lg-5 col-lg-offset-1">
             <div class="spacing"></div>
             {{ content }}
             <div class="spacing"></div>
@@ -27,11 +27,23 @@ layout: default
             {% if page.tags %}<p><b>Tags:</b> {{ page.tags }}</p>{% endif %}
             {% if page.affiliation %}<p><b>Affiliation:</b> {{ page.affiliation }}</p>{% endif %}
         </div>
-        <div class="col-lg-4 col-lg-offset-1">
+        <div class="col-lg-4 col-lg-offset-1" style="margin-bottom:50px">
             <a href="{{ site.baseurl }}/assets/images/{{ page.image }}" target="_blank">
             <img src="{{ site.baseurl }}/assets/images/{{ page.image }}" width="400px"></img></a>
         </div>
     </div><! --/row -->
-</div><! --/container>
+     <div class="row">
+        <div class="col-md-12">
+        {% for image in site.static_files %}
+            {% capture currentyear %}{{ page.date | date: "%Y"}}/{% endcapture %}
+            {% capture imagename %}{{ page.image |remove: currentyear }}{% endcapture %}
+            {% if image.path contains imagename %}
+              <a href="{{ site.baseurl }}{{ image.path }}" style="width:32%">
+                  <img src="{{ site.baseurl }}{{ image.path }}" alt="image" />
+              </a>
+            {% endif %}
 
-{% include portfolio.html limit=5 %}
+        {% endfor %}
+        </div>
+    </div>
+</div><! --/container>

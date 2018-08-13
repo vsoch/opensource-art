@@ -1,0 +1,6 @@
+---
+title: OpenSource Art Contributions
+layout: none
+---
+{% for file in site.static_files %}{% if file.path contains "assets/images" %}{{ file.path }}
+{% endif %}{% endfor %}

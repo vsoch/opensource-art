@@ -24,14 +24,14 @@ colors:  #in hex code if not noted else
 # Works --> human contributions
 collections:
   works:
-    output: true
-    permalink: /works/:title/
+      output: true
+      permalink: /works/:title/
   gallery:
-    output: true
-    permalink: /gallery/:title/
+      output: true
+      permalink: /gallery/:path/
   questions:
-    output: true
-    permalink: /questions/:title/
+      output: true
+      permalink: /questions/:title/
 
 ### CONTACT SETTINGS ###
 
