@@ -50,7 +50,7 @@ class TestOpenSourceArt(unittest.TestCase):
 
         # Human contributions
         works = recursive_find('%s/_works' %self.base, '*.md')
-        self.works = [x for x in works if x.startswith('_works')] 
+        self.works = [x for x in works if '_works' in works] 
 
         # Robot generated
         self.gallery = recursive_find('%s/_gallery' %self.base, '*.jpg')

@@ -240,20 +240,24 @@ workflows:
 
       - update_cache:
           requires:
+            - setup
             - build
           filters:
             branches:
               ignore: /docs?/.*/
+              ignore: gh-pages
             tags:
               only: /.*/
 
       # Push the gallery back to Github pages
       - gallery:
           requires:
+            - setup
             - build
             - update_cache
           filters:
             branches:
               only: master
+              ignore: gh-pages
             tags:
               only: /.*/
