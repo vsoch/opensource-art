@@ -13,7 +13,7 @@ import re
 import yaml
 import fnmatch
  
-here = os.abspath(os.path.dirname(__file__))
+here = os.path.abspath(os.path.dirname(__file__))
 
 # Helper Functions
 
