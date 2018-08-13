@@ -50,7 +50,7 @@ class TestOpenSourceArt(unittest.TestCase):
 
         # Human contributions
         works = recursive_find('%s/_works' %self.base, '*.md')
-        self.works = [x for x in works if '_works' in works] 
+        self.works = [x for x in works if '_works' in x] 
 
         # Robot generated
         self.gallery = recursive_find('%s/_gallery' %self.base, '*.jpg')
@@ -60,9 +60,6 @@ class TestOpenSourceArt(unittest.TestCase):
         # identify new works in gallery based on missing folders
         self.find_new() 
         
-        #process = Popen(['git','diff-tree','--no-commit-id','--name-only','-r','HEAD'], stderr=PIPE, stdout=PIPE)
-        #added, error = process.communicate()
-        #added = [x for x in added.decode('utf-8').split('\n') if x]
 
     def find_new(self):
         print('Found %s works in the gallery' %len(self.gallery))
