@@ -123,8 +123,9 @@ opensourceart: &opensourceart
         done
         echo "4. Copying art back to the gallery!"
         mkdir -p /tmp/gallery
+        # copies to /tmp/gallery/outputs
         docker cp osart:/data/outputs /tmp/gallery
-        ls /tmp/gallery
+        ls /tmp/gallery/outputs
         docker stop osart
 
 
@@ -135,13 +136,6 @@ opensourceart: &opensourceart
 
 version: 2
 jobs:
-  setup:
-    <<: *defaults
-    steps:
-      - run: *dockerenv
-      - run: *install
-      - run: *githubsetup
-
   build:
     <<: *defaults
     working_directory: /tmp/src
@@ -154,13 +148,16 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: *dockerenv
+      - run: *githubsetup
       - run: *opensourceart
       - run: *dockersave
       - persist_to_workspace:
-          root: /opt
+          root: /tmp
           paths:
             - cache/container.tar.gz
-            - opensource-art
+            - OSART.new
+            - src
+            - gallery
 
   update_cache:
     <<: *defaults
@@ -187,27 +184,47 @@ jobs:
           no_output_timeout: 40m
           command: |
             source ${BASH_ENV}
+            cd /tmp
+            echo "Present working directory is ${PWD}"
+            ls
             if [[ -n "${GITHUB_EMAIL:-}" ]];
                 then
                     echo "=== Deploying Gallery to Github Pages ==="
-                    echo "Generating Container Manifest"
                     echo "1. Checking out Github pages branch"
                     ssh-keyscan -H github.com >> ~/.ssh/known_hosts
                     git clone "git@github.com:${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git" out
                     cd out
                     # either checkout github pages, or create orphan
                     git checkout gh-pages || git checkout --orphan gh-pages
-                    # Save all previous tags, so we don't pull and re-generate
-                    cp -R ${PWD} ../out-old
+                    # Save all previous content, so we don't pull and re-generate
+                    cp -R docs ../ghpages
                     git rm -rf .
                     # ensure that github pages are ignored
-                    mkdir -p .circleci && cp -a ../.circleci/. .circleci/.
+                    mkdir -p .circleci && cp -a ../src/.circleci/. .circleci/.
                     # Copy back previous files
-                    cp -R ../out-old/* ${PWD}
+                    cp -R ../ghpages/* .
                     # Add new images to gallery
-                    count=$(cat ${OPENSOURCEART_NEW_WORKS}/dreamy* | wc -l)
+                    count=$(cat ${OPENSOURCEART_NEW_WORKS} | wc -l)
                     echo "Found ${count} new works!"
-                    cp ${OPENSOURCEART_NEW_WORKS}/dreamy* _gallery/
+                    # For each new work, copy to the gallery, under folder with same name
+                    mkdir -p _gallery
+                    for work in $(cat ${OPENSOURCEART_NEW_WORKS})
+                        do
+                        filename=$(basename $work)
+                        extension="${filename##*.}"
+                        uri="${filename%.*}"
+                        # Create the gallery folder
+                        gallery_folder="_gallery/${uri}"
+                        mkdir -p ${gallery_folder}
+                        gallery_image=/tmp/gallery/outputs/dreamy-${filename}
+                        if [ -f "${gallery_image}" ]
+                            then
+                            echo "Adding $uri to gallery!"
+                            cp "${gallery_image}" "${gallery_folder}"
+                        else
+                            echo "Cannot find expected ${gallery_image}, skipping copy!"
+                        fi
+                    done
                     git add -A;
                     git commit -m "Automated deployment to GitHub Pages ${CIRCLE_SHA1}" --allow-empty
                     git push origin gh-pages
@@ -223,12 +240,6 @@ workflows:
   version: 2
   build_deploy:
     jobs:
-      - setup:
-          filters:
-            branches:
-              ignore: gh-pages
-            tags:
-              only: /.*/
       - build:
           requires:
             - setup
