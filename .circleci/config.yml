@@ -37,7 +37,7 @@ dockerenv: &dockerenv
     command: |
         # If not set, define DOCKER_TAG
         if [ ! -n "${DOCKER_TAG:-}" ]; then
-            DOCKER_TAG=0.0.2
+            DOCKER_TAG=0.0.3
         fi
         if [ ! -n "${CONTAINER_NAME:-}" ]; then
             CONTAINER_NAME=vanessa/deepdream
@@ -118,8 +118,8 @@ opensourceart: &opensourceart
                 echo "docs/assets/images/${image}"
                 echo "docker cp docs/assets/images/$image osart:/data/inputs/${image_name}"
                 docker cp docs/assets/images/$image osart:/data/inputs/${image_name}
-                echo "docker exec osart python /deepdream.py /data/inputs/${image_name}"
-                docker exec osart python /deepdream.py /data/inputs/${image_name}
+                echo "docker exec osart /bin/bash /run.sh /data/inputs/${image_name}"
+                docker exec osart /bin/bash /run.sh /data/inputs/${image_name}
         done
         echo "4. Copying art back to the gallery!"
         mkdir -p /tmp/gallery
