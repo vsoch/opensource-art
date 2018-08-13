@@ -26,6 +26,7 @@ install: &install
           wget https://bootstrap.pypa.io/get-pip.py
           python3 get-pip.py
           python3 -m pip install pyaml
+          rm get-pip.py
 
 # Environment
 sourceenv: &sourceenv
@@ -149,7 +150,7 @@ jobs:
 
   build:
     <<: *defaults
-    working_directory: /opt/opensource-art
+    working_directory: /tmp/src
     steps:
       - run: *install
       - restore_cache:
@@ -230,7 +231,15 @@ workflows:
   version: 2
   build_deploy:
     jobs:
+      - setup:
+          filters:
+            branches:
+              ignore: gh-pages
+            tags:
+              only: /.*/
       - build:
+          requires:
+            - setup
           filters:
             branches:
               ignore: gh-pages
