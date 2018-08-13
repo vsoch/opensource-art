@@ -1,0 +1,14 @@
+---
+title: OpenSource Art Contributions
+layout: none
+---
+
+[{% for exp in site.works %}
+    {
+        "name": "{{ exp.name }}",
+        "title": "{{ exp.title }}",
+        "author": "{{ exp.author }}",
+        "date": "{{ exp.date }}",
+        {% if exp.tags %}"tags": [{% for tag in exp.tags %}"{{ tag }}"{% if forloop.last %}{% else %},{% endif %}{% endfor %}]{% endif %}
+  }{% if forloop.last %}{% else %},{% endif %}
+{% endfor %}]

@@ -1,0 +1,44 @@
+### GENERAL SETTINGS ###
+
+# Site settings
+title: opensource-art
+description: "Open Source Art Gallery, By Hand, by Machine"
+baseurl: "/opensource-art" #important: start with /
+url: ""
+
+# Build settings
+markdown: kramdown
+permalink: /:categories/:title
+excerpt_separator: <!--more-->
+
+colors:  #in hex code if not noted else
+  primary: "#e32929"
+  primary_rgb: "247,0,49" #rgb of the primary. Needed in some places for the transparency effect.
+  secondary: "#F7F7F7"
+  link: "#e32929"
+  link_hover: "#01b2fe"
+  footer_heading: "#777"
+  footer_content: "#bfc9d3"
+
+# Gallery --> robot art
+# Works --> human contributions
+collections:
+  works:
+    output: true
+    permalink: /works/:title/
+  gallery:
+    output: true
+    permalink: /gallery/:title/
+  questions:
+    output: true
+    permalink: /questions/:title/
+
+### CONTACT SETTINGS ###
+
+# Social networks usernames. Many more available: google-plus, flickr, linkedin, etc). Shown in footer.
+social:
+  - title: twitter
+    url: https://www.twitter.com/vsoch
+
+# Short text about your company. Shown in footer on every page and also separately on Home and Contact page.
+about: "Open Source Art is a Programatically generated gallery of daily works, derived by community contributions and open source software engineeering practices."
