@@ -1,0 +1,263 @@
+# This will build and deploy an opensource art repository back to Github Pages
+# https://github.com/vsoch/opensource-art/tree/.circleci
+
+# In addition to the variables defined above, you should set the GITHUB_EMAIL
+# to be the email associated with the repo (for deploy to Github pages).
+# if not set, this step won't be done 
+
+################################################################################
+# Functions
+################################################################################
+
+# Defaults
+defaults: &defaults
+  docker:
+    - image: docker:18.01.0-ce-git
+  environment:
+    - JEKYLL_ENV: production
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES: true
+
+# Installation
+install: &install
+    name: Install parallel gzip, gettext, python3, and jq
+    command: |
+          apk add --no-cache pigz python3 gettext jq
+          wget https://bootstrap.pypa.io/get-pip.py
+          python3 get-pip.py
+          python3 -m pip install pyaml requests
+          rm get-pip.py
+
+# Environment
+sourceenv: &sourceenv
+    name: Source environment variables from the BASH_ENV
+    command: source $BASH_ENV 
+
+dockerenv: &dockerenv
+    name: Define container and Docker names
+    command: |
+        # If not set, define DOCKER_TAG
+        if [ ! -n "${DOCKER_TAG:-}" ]; then
+            DOCKER_TAG=0.0.4
+        fi
+        if [ ! -n "${CONTAINER_NAME:-}" ]; then
+            CONTAINER_NAME=vanessa/deepdream
+        fi
+        if [ ! -n "${OPENSOURCEART_NEW_WORKS:-}" ]; then
+            OPENSOURCEART_NEW_WORKS=/tmp/OSART.new
+        fi
+        # export to bash environment
+        echo "export DOCKER_TAG=${DOCKER_TAG}" >> ${BASH_ENV}
+        echo "export CONTAINER_NAME=${CONTAINER_NAME}" >> ${BASH_ENV}
+        echo "export OPENSOURCEART_NEW_WORKS=${OPENSOURCEART_NEW_WORKS}" >> ${BASH_ENV}
+        cat ${BASH_ENV}
+
+
+dockerload: &dockerload
+    name: Load Docker container Image
+    no_output_timeout: 30m
+    command: | 
+      echo "Working directory is ${PWD}"
+      docker info
+      set +o pipefail
+      if [ -f /tmp/cache/container.tar.gz ]; then
+          apk update && apk add --no-cache pigz curl curl-dev
+          pigz -d --stdout /tmp/cache/container.tar.gz | docker load
+          docker images
+      fi
+
+dockersave: &dockersave
+    name: Docker Save
+    no_output_timeout: 40m
+    command: |
+        source ${BASH_ENV}
+        echo "Saving ${CONTAINER_NAME}:${DOCKER_TAG} to container.tar.gz"
+        mkdir -p /tmp/cache
+        docker save ${CONTAINER_NAME}:${DOCKER_TAG} \
+          | pigz -2 -p 3 > /tmp/cache/container.tar.gz
+
+githubsetup: &githubsetup
+    name: Prepare Github account credentials
+    command: |
+        # Only proceed if we minimally have a Github email
+        if [[ -n "${GITHUB_EMAIL:-}" ]];
+            then
+                echo "Preparing Github account credentials"
+                git config --global user.email $GITHUB_EMAIL
+                # If username is defined, use it (otherwuse use circle project)
+                if [[ -n "${GITHUB_USER:-}" ]];
+                    then
+                    git config --global user.name $GITHUB_USER
+                else
+                    git config --global user.name $CIRCLE_PROJECT_USERNAME
+                fi
+        fi
+
+opensourceart: &opensourceart
+    name: Run vanessa/deepdream to generate opensource art
+    no_output_timeout: 60m
+    command: |
+        echo "OpenSource Art!"
+        source ${BASH_ENV}
+        cd /tmp/src && python3 -m unittest tests.test_works
+        echo "Previewing Works Metadata"
+        cat ${OPENSOURCEART_NEW_WORKS}
+        echo "0. Installing dependencies..."
+        echo "DeepDreams are made of cheese, who am I to diss a brie?"
+        echo "1. Preparing robot art studio!"
+        echo "Working directory is ${PWD}"
+        echo "2. Identifying new works!"
+        cat "${OPENSOURCEART_NEW_WORKS}"
+        echo "3. Starting opensource-art container"
+        docker run --name osart  --entrypoint bash -dt "${CONTAINER_NAME}:${DOCKER_TAG}"
+        docker exec osart mkdir -p /data/inputs
+        for image in $(cat ${OPENSOURCEART_NEW_WORKS})
+            do
+                echo " === $image === "
+                image_name=$(basename ${image})
+                echo "$image_name"
+                echo "docs/assets/images/${image}"
+                echo "docker cp docs/assets/images/$image osart:/data/inputs/${image_name}"
+                docker cp docs/assets/images/$image osart:/data/inputs/${image_name}
+                echo "docker exec osart /bin/bash /run.sh /data/inputs/${image_name}"
+                docker exec osart /bin/bash /run.sh /data/inputs/${image_name}
+        done
+        echo "4. Copying art back to the gallery!"
+        mkdir -p /tmp/gallery
+        docker cp osart:/data/outputs /tmp/gallery
+        ls /tmp/gallery
+        docker stop osart
+
+
+################################################################################
+# Jobs
+################################################################################
+
+
+version: 2
+jobs:
+  setup:
+    <<: *defaults
+    steps:
+      - run: *dockerenv
+      - run: *install
+      - run: *githubsetup
+
+  build:
+    <<: *defaults
+    working_directory: /tmp/src
+    steps:
+      - run: *install
+      - restore_cache:
+          key: docker-v1-{{ .Branch }}
+          paths:
+            - /tmp/cache/container.tar.gz
+      - checkout
+      - setup_remote_docker
+      - run: *dockerenv
+      - run: *opensourceart
+      - run: *dockersave
+      - persist_to_workspace:
+          root: /opt
+          paths:
+            - cache/container.tar.gz
+            - opensource-art
+
+  update_cache:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - save_cache:
+          key: docker-v1-{{ .Branch }}
+          paths:
+            - /tmp/cache/container.tar.gz
+
+  gallery:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - setup_remote_docker
+      - run: *dockerenv
+      - run: *dockerload
+      - run: *githubsetup
+      - run: *install
+      - run:
+          name: Generate Open Source Art
+          no_output_timeout: 40m
+          command: |
+            source ${BASH_ENV}
+            if [[ -n "${GITHUB_EMAIL:-}" ]];
+                then
+                    echo "=== Deploying Gallery to Github Pages ==="
+                    echo "Generating Container Manifest"
+                    echo "1. Checking out Github pages branch"
+                    ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+                    git clone "git@github.com:${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git" out
+                    cd out
+                    # either checkout github pages, or create orphan
+                    git checkout gh-pages || git checkout --orphan gh-pages
+                    # Save all previous tags, so we don't pull and re-generate
+                    cp -R ${PWD} ../out-old
+                    git rm -rf .
+                    # ensure that github pages are ignored
+                    mkdir -p .circleci && cp -a ../.circleci/. .circleci/.
+                    # Copy back previous files
+                    cp -R ../out-old/* ${PWD}
+                    # Add new images to gallery
+                    count=$(cat ${OPENSOURCEART_NEW_WORKS}/dreamy* | wc -l)
+                    echo "Found ${count} new works!"
+                    cp ${OPENSOURCEART_NEW_WORKS}/dreamy* _gallery/
+                    git add -A;
+                    git commit -m "Automated deployment to GitHub Pages ${CIRCLE_SHA1}" --allow-empty
+                    git push origin gh-pages
+            else
+                echo "GITHUB_EMAIL not set, skipping manifest deploy to Github pages"
+            fi
+
+################################################################################
+# Workflows
+################################################################################
+
+workflows:
+  version: 2
+  build_deploy:
+    jobs:
+      - setup:
+          filters:
+            branches:
+              ignore: gh-pages
+            tags:
+              only: /.*/
+      - build:
+          requires:
+            - setup
+          filters:
+            branches:
+              ignore: gh-pages
+            tags:
+              only: /.*/
+
+      - update_cache:
+          requires:
+            - setup
+            - build
+          filters:
+            branches:
+              ignore: /docs?/.*/
+              ignore: gh-pages
+            tags:
+              only: /.*/
+
+      # Push the gallery back to Github pages
+      - gallery:
+          requires:
+            - setup
+            - build
+            - update_cache
+          filters:
+            branches:
+              only: master
+              ignore: gh-pages
+            tags:
+              only: /.*/
