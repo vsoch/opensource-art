@@ -154,6 +154,7 @@ jobs:
     steps:
       - run: *install
       - restore_cache:
+          key: docker-v1-{{ .Branch }}
           paths:
             - /tmp/cache/container.tar.gz
       - checkout
@@ -175,8 +176,8 @@ jobs:
       - attach_workspace:
           at: /tmp
       - save_cache:
-         key: docker-v1-{{ .Branch }}
-         paths:
+          key: docker-v1-{{ .Branch }}
+          paths:
             - /tmp/cache/container.tar.gz
 
   gallery:
