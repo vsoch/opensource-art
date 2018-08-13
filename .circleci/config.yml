@@ -221,7 +221,7 @@ jobs:
                             then
                             echo "Adding $uri to gallery!"
                             cp ${gallery_image} ${gallery_folder}
-                            cp "/tmp/gallery/outputs/*${uid}" "${gallery_folder}"
+                            cp /tmp/gallery/outputs/*${uri} "${gallery_folder}"
                         else
                             echo "Cannot find expected ${gallery_image}, skipping copy!"
                         fi
