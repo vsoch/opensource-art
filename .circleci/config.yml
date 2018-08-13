@@ -37,7 +37,7 @@ dockerenv: &dockerenv
     command: |
         # If not set, define DOCKER_TAG
         if [ ! -n "${DOCKER_TAG:-}" ]; then
-            DOCKER_TAG=0.0.4
+            DOCKER_TAG=0.0.5
         fi
         if [ ! -n "${CONTAINER_NAME:-}" ]; then
             CONTAINER_NAME=vanessa/deepdream
@@ -221,6 +221,7 @@ jobs:
                             then
                             echo "Adding $uri to gallery!"
                             cp "${gallery_image}" "${gallery_folder}"
+                            cp /tmp/gallery/outputs/*${uid} "${gallery_folder}"
                         else
                             echo "Cannot find expected ${gallery_image}, skipping copy!"
                         fi
