@@ -216,12 +216,12 @@ jobs:
                         # Create the gallery folder
                         gallery_folder="_gallery/${uri}"
                         mkdir -p ${gallery_folder}
-                        gallery_image=/tmp/gallery/outputs/dreamy-${filename}
+                        gallery_image="/tmp/gallery/outputs/dreamy-${filename}"
                         if [ -f "${gallery_image}" ]
                             then
                             echo "Adding $uri to gallery!"
-                            cp "${gallery_image}" "${gallery_folder}"
-                            cp /tmp/gallery/outputs/*${uid} "${gallery_folder}"
+                            cp ${gallery_image} ${gallery_folder}
+                            cp "/tmp/gallery/outputs/*${uid}" "${gallery_folder}"
                         else
                             echo "Cannot find expected ${gallery_image}, skipping copy!"
                         fi
