@@ -104,8 +104,8 @@ class TestOpenSourceArt(unittest.TestCase):
             self.print_work_name(work)
 
             # Filename can only be lowercase with special characters - and _
-            if not re.search(work, '[a-z][0-9]-_'):
-                print('Invalid unique identifier %s, only lowercase and - _')
+            if not re.match("^[a-z0-9_-]*$", work):
+                print('Invalid unique id %s, only lowercase and - _' % work)
                 sys.exit(1)
 
 
