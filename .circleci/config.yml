@@ -150,7 +150,7 @@ jobs:
 
   build:
     <<: *defaults
-    working_directory: /tmp/src
+    working_directory: /tmp
     steps:
       - run: *install
       - checkout
