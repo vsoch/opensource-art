@@ -242,8 +242,6 @@ workflows:
   build_deploy:
     jobs:
       - build:
-          requires:
-            - setup
           filters:
             branches:
               ignore: gh-pages
@@ -252,7 +250,6 @@ workflows:
 
       - update_cache:
           requires:
-            - setup
             - build
           filters:
             branches:
@@ -264,7 +261,6 @@ workflows:
       # Push the gallery back to Github pages
       - gallery:
           requires:
-            - setup
             - build
             - update_cache
           filters:
