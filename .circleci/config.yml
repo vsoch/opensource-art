@@ -47,7 +47,7 @@ dockerenv: &dockerenv
         fi
         # export to bash environment
         echo "export DOCKER_TAG=${DOCKER_TAG}" >> ${BASH_ENV}
-        echo "export DOCKER_CONTAINER_NAME=${CONTAINER_NAME}" >> ${BASH_ENV}
+        echo "export CONTAINER_NAME=${CONTAINER_NAME}" >> ${BASH_ENV}
         echo "export OPENSOURCEART_NEW_WORKS=${OPENSOURCEART_NEW_WORKS}" >> ${BASH_ENV}
         cat ${BASH_ENV}
 
@@ -97,6 +97,7 @@ opensourceart: &opensourceart
     no_output_timeout: 60m
     command: |
         echo "OpenSource Art!"
+        source ${BASH_ENV}
         cd /tmp/src && python3 -m unittest tests.test_works
         echo "Previewing Works Metadata"
         cat ${OPENSOURCEART_NEW_WORKS}
@@ -104,7 +105,6 @@ opensourceart: &opensourceart
         echo "DeepDreams are made of cheese, who am I to diss a brie?"
         echo "1. Preparing robot art studio!"
         echo "Working directory is ${PWD}"
-        source ${BASH_ENV}
         echo "2. Identifying new works!"
         cat "${OPENSOURCEART_NEW_WORKS}"
         echo "3. Starting opensource-art container"
@@ -112,12 +112,14 @@ opensourceart: &opensourceart
         docker exec osart mkdir -p /data/inputs
         for image in $(cat ${OPENSOURCEART_NEW_WORKS})
             do
-                echo "$image"
+                echo " === $image === "
                 image_name=$(basename ${image})
                 echo "$image_name"
                 echo "docs/assets/images/${image}"
+                echo "docker cp docs/assets/images/$image osart:/data/inputs/${image_name}"
                 docker cp docs/assets/images/$image osart:/data/inputs/${image_name}
-                docker exec osart python /data/inputs/${image_name}
+                echo "docker exec osart python /deepdream.py /data/inputs/${image_name}"
+                docker exec osart python /deepdream.py /data/inputs/${image_name}
         done
         echo "4. Copying art back to the gallery!"
         mkdir -p /tmp/gallery

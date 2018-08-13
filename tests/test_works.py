@@ -47,40 +47,69 @@ class TestOpenSourceArt(unittest.TestCase):
  
     def setUp(self):
         self.base = os.path.abspath(os.path.join(here, '../','docs'))
-        self.existing = recursive_find('%s/_works' %self.base, '*.md')
-        process = Popen(['git','diff-tree','--no-commit-id','--name-only','-r','HEAD'], stderr=PIPE, stdout=PIPE)
-        added, error = process.communicate()
-        added = [x for x in added.decode('utf-8').split('\n') if x]
-        self.added = [x for x in added if x.startswith('_works')] 
+
+        # Human contributions
+        works = recursive_find('%s/_works' %self.base, '*.md')
+        self.works = [x for x in works if x.startswith('_works')] 
+
+        # Robot generated
+        self.gallery = recursive_find('%s/_gallery' %self.base, '*.jpg')
         self.lookup = {}
         self.load_works()
+
+        # identify new works in gallery based on missing folders
+        self.find_new() 
+        
+        #process = Popen(['git','diff-tree','--no-commit-id','--name-only','-r','HEAD'], stderr=PIPE, stdout=PIPE)
+        #added, error = process.communicate()
+        #added = [x for x in added.decode('utf-8').split('\n') if x]
+
+    def find_new(self):
+        print('Found %s works in the gallery' %len(self.gallery))
+        print('Found %s contributions.' %len(self.works))
+        markdowns = [work['uid'] for md, work in self.lookup.items()]
+
+        # Gallery is a set of folders named by uid
+        if os.path.exists('%s/_gallery' %self.base):
+            gallery = os.listdir('%s/_gallery' %self.base)
+        else:
+            gallery = []
+
+        # Works without folders are not yet in the gallery
+        self.added = set(markdowns).difference(gallery)
+        print('Found %s works in the gallery' %len(self.added))
+        
 
     def print_work_name(self, work):
         print('Testing Work %s' % os.path.basename(work).strip('.md'))            
 
     def load_works(self):
         '''read metadata from newly added works'''
-        for work in self.added:
+        for work in self.works:
             metadata = dict()
             uid = os.path.basename(work).strip('.md')
             print('Found %s' % uid)
-
             # Parse the metadata
             if os.path.exists(work):
                 metadata = load_yaml(work)
                 metadata['uid'] = uid
-                self.lookup[work] = metadata
+                self.lookup[uid] = metadata
             else:
-                print('Skipping %s, file removed.' % registry)
+                print('Skipping %s, file removed.' % work)
 
-        # Update the list of added
-        self.added = list(self.lookup.keys())
+        # Update the list of works
+        self.works = list(self.lookup.keys())
+
 
     def test_filenames(self):
         for work in self.added:
-            self.print_work_name(registry)
-            self.assertTrue(work.endswith('md'))
-            
+            self.print_work_name(work)
+
+            # Filename can only be lowercase with special characters - and _
+            if not re.search(work, '[a-z][0-9]-_'):
+                print('Invalid unique identifier %s, only lowercase and - _')
+                sys.exit(1)
+
 
     def test_markdown_metadata(self):
         '''ensure that fields are present in markdown file
@@ -122,7 +151,6 @@ class TestOpenSourceArt(unittest.TestCase):
         for work in self.added:
             self.print_work_name(work)
             metadata = self.lookup[work]
-
             image_name = metadata['image']
             image_path = '%s/assets/images/%s' % (self.base, image_name)
 
@@ -130,17 +158,26 @@ class TestOpenSourceArt(unittest.TestCase):
             if not os.path.exists(image_path):
                 print('ERROR: %s does not exist, reported in %s' %(image_path, 
                                                                    work['uid']))
+            # It must be named corresponding to the uid
+            image_basename = os.path.basename(image_name)
+
+            # It must be jpg
+            if not image_basename.endswith('jpg'):
+                print('%s must have jpg extension!' %image_name)
+                sys.exit(1)           
+
 
     def test_generate_output(self):
         '''write to (temporary) file the output of newly added works to generate images for!
            The temporary file is derived from the environment, otherwise put in tmp
            We only make it to this test given that all other tests pass!
         '''
-
         new_works = os.environ.get('OPENSOURCEART_NEW_WORKS', '/tmp/OSART.new')
         print('New works will be written to %s' %new_works)
         with open(new_works, 'w') as fh:
-            for work in self.added:
+            for uid in self.added:
+                work = self.lookup[uid]
+                print(uid)
                 fh.writelines('%s\n' %work['image'])
 
 if __name__ == '__main__':
