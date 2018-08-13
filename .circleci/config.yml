@@ -88,14 +88,6 @@ githubsetup: &githubsetup
                 fi
         fi
 
-jekyllbuild: &jekyllbuild
-    name: Build the Jekyll Site
-    no_output_timeout: 60m
-    command: |
-        cd /tmp/src/docs
-        gem install jekyll
-        jekyll build
-
 testing: &testing
     name: Test contributed metadata
     no_output_timeout: 60m
@@ -160,7 +152,6 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: *dockerenv
-      - run: *jekyllbuild
       - run: *testing
       - run: *opensourceart
       - run: *dockersave
