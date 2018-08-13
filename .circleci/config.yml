@@ -247,7 +247,6 @@ workflows:
       - update_cache:
           requires:
             - build
-            - testing
           filters:
             branches:
               ignore: /docs?/.*/
@@ -258,7 +257,7 @@ workflows:
       - gallery:
           requires:
             - build
-            - testing
+            - update_cache
           filters:
             branches:
               only: master
