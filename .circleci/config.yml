@@ -26,7 +26,7 @@ install: &install
     command: |
           apk add --no-cache pigz python3 gettext jq
           wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-          /bin/bash Miniconda3-latest-Linux-x86_64.sh -b 
+          /bin/sh Miniconda3-latest-Linux-x86_64.sh -b 
           ~/miniconda3/bin/python -m pip install pyaml
 
 # Environment
@@ -193,9 +193,6 @@ jobs:
       - run: *dockerload
       - run: *githubsetup
       - run: *install
-      - add_ssh_keys: 
-          fingerprints: 
-            - "d4:37:a4:3b:1e:ea:eb:6a:b7:e3:0a:52:e2:8c:ac:d0"
       - run:
           name: Generate Open Source Art
           no_output_timeout: 40m
