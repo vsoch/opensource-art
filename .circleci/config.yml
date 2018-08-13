@@ -13,8 +13,7 @@
 defaults: &defaults
   docker:
     - image: docker:18.01.0-ce-git
-#    - image: circleci/ruby:2.5.1
-  working_directory: /tmp/src
+    - image: circleci/ruby:2.5.1
   environment:
     - JEKYLL_ENV: production
     - NOKOGIRI_USE_SYSTEM_LIBRARIES: true
@@ -151,15 +150,9 @@ jobs:
 
   build:
     <<: *defaults
+    working_directory: /tmp/src
     steps:
       - run: *install
-      - restore_cache:
-          keys:
-            - docker-v1-{{ .Branch }}
-          paths:
-            - /tmp/cache/container.tar.gz
-      - restore_cache:
-          key: dependency-cache-opensource-art
       - checkout
       - setup_remote_docker
       - run: *dockerenv
