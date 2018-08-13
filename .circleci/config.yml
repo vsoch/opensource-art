@@ -25,9 +25,9 @@ install: &install
     name: Install parallel gzip, gettext, python3, and jq
     command: |
           apk add --no-cache pigz python3 gettext jq
-          wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-          /bin/sh Miniconda3-latest-Linux-x86_64.sh -b 
-          ~/miniconda3/bin/python -m pip install pyaml
+          wget https://bootstrap.pypa.io/get-pip.py
+          python3 get-pip.py
+          python3 -m pip install pyaml
 
 # Environment
 sourceenv: &sourceenv
@@ -102,7 +102,7 @@ testing: &testing
     no_output_timeout: 60m
     command: |
         echo "OpenSource Art!"
-        cd /tmp/src && ~/miniconda3/bin/python -m unittest tests.test_works
+        cd /tmp/src && python3 -m unittest tests.test_works
         echo "Previewing Works Metadata"
         cat ${OPENSOURCEART_NEW_WORKS}
         cat docs/_site/library.json
