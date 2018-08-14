@@ -172,9 +172,9 @@ jobs:
 
   gallery:
     <<: *defaults
+    working_directory: /tmp/src
     steps:
-      - attach_workspace:
-          at: /tmp
+      - checkout
       - setup_remote_docker
       - run: *dockerenv
       - run: *dockerload
@@ -185,6 +185,7 @@ jobs:
           no_output_timeout: 40m
           command: |
             source ${BASH_ENV}
+            cd /tmp/src && python3 -m unittest tests.test_works
             cd /tmp
             echo "Present working directory is ${PWD}"
             ls
