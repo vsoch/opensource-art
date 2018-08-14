@@ -223,6 +223,9 @@ jobs:
                             echo "Adding $uri to gallery!"
                             cp ${gallery_image} ${gallery_folder}
                             cp /tmp/gallery/outputs/*${uri}* "${gallery_folder}"
+                            # Copy the original markdown post
+                            markdown="${work%.*}.md"
+                            cp /tmp/src/docs/_works/${markdown} _works/                
                         else
                             echo "Cannot find expected ${gallery_image}, skipping copy!"
                         fi
