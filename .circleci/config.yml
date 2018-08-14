@@ -198,7 +198,7 @@ jobs:
                     # either checkout github pages, or create orphan
                     git checkout gh-pages || git checkout --orphan gh-pages
                     # Save all previous content, so we don't pull and re-generate
-                    cp -R docs ../ghpages
+                    cp -R . ../ghpages
                     git rm -rf .
                     # ensure that github pages are ignored
                     mkdir -p .circleci && cp -a ../src/.circleci/. .circleci/.
