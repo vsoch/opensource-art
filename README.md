@@ -65,7 +65,7 @@ Next, copy one of the current works pages under [_works](docs/_works), and give 
 and doesn't have any special characters. The following fields have suggestions for their content:
 
  - *categories* should be one of texture or work.
- - *image* must be defined, as some subfolder path under [assets/images/](docs/assets/images). We recommend that you put the image in the folder for the corresponding year, and that it is named based on `<artist>-<title>.<extension>` (see example below).
+ - *image* must be defined, as some subfolder path under [assets/images/](docs/assets/images). We recommend that you put the image in the folder for the corresponding year, and that it is named based on `<artist>-<title>.jpg`. We have not tested beyond jpg so we are currently requiring it! (see example below).
  - *layout* you must leave as "work"
  - *tags* are up to you! These should describe your contribution, separated by commas.
  - *date* should be in the format YYYY-MM-DD HH-MM:SS
@@ -89,11 +89,14 @@ image: 2018/tim-holman-circle-packing.jpg
 You can write a description here, if you like!
 ```
 
-The image path should be under the root "assets/img" in the repository. Thus for the above:
+The image path should be under the root "assets/images" in the repository. Thus for the above:
 
 ```bash
 2018/tim-holman-circle-packing.jpg --> assets/images/2018/tim-holman-circle-packing.jpg
 ```
+
+**important** notice that the image name has the **same** unique resource identifier (`tim-holman-circle-packing`) as the post.
+This is important for programmatic things, and it will be checked and tested.
 
 Finally, notice that the (more verbose if you like) description is at the bottom, under everything. Feel
 free to write as little or as much as you like here!
