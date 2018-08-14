@@ -34,7 +34,7 @@ layout: default
     </div><! --/row -->
      <div class="row">
         <div class="col-md-12">
-        {% for image in site.static_files %}{% capture currentyear %}{{ page.date | date: "%Y"}}/{% endcapture %}{% capture imagename %}{{ page.image |remove: currentyear }}{% endcapture %}{% if image.path contains imagename %}<a href="{{ site.baseurl }}{{ image.path }}" style="width:32%">
+        {% for image in site.gallery.files %}{% capture currentyear %}{{ page.date | date: "%Y"}}/{% endcapture %}{% capture imagename %}{{ page.image |remove: currentyear }}{% endcapture %}{% if image.path contains imagename %}<a href="{{ site.baseurl }}{{ image.path }}" style="width:32%">
           <img src="{{ site.baseurl }}{{ image.path }}" alt="image" /></a>{% endif %}{% endfor %}
         </div>
     </div>
