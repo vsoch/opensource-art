@@ -9,22 +9,18 @@ layout: default
         {% if include.title %}<h3>{{ include.title }}</h3>{% endif %}
         <div class="recentitems portfolio">
             {% for work in site.works limit:6 %}
-                <div class="col-md-2">
-                {% capture currentyear %}{{ work.date | date: "%Y"}}/{% endcapture %}
-                <div class="portfolio-item graphic-design">
-                    <div class="he-wrap tpl6">
-                    <a href="{{  work.url | prepend: site.baseurl }}" class="dmbutton a2" data-animate="fadeInUp">
-                    <img style="max-height:200px;" src="{{ site.baseurl }}/assets/images/{{ work.image }}" alt="">
-                    <img style="max-height:200px;" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0000-{{ work.image | remove: currentyear }}" alt="">
-                    <img style="max-height:200px;" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0001-{{ work.image | remove: currentyear }}" alt="">
-                    <img style="max-height:200px;" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0002-{{ work.image | remove: currentyear }}" alt="">
-                    <img style="max-height:200px;" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0003-{{ work.image | remove: currentyear }}" alt="">
-                    <img style="max-height:200px;" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0004-{{ work.image | remove: currentyear }}" alt="">
-                    <img style="max-height:200px;" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/dreamy-{{ work.image | remove: currentyear }}" alt=""></a>
-                            </div><!-- he bg -->
-                        </div><!-- he wrap -->
-                    </div><!-- he wrap -->
-                </div><!-- end col-12 -->
+                <a href="{{  work.url | prepend: site.baseurl }}" class="dmbutton a2" data-animate="fadeInUp">
+                <div class="row nopadding">
+                    {% capture currentyear %}{{ work.date | date: "%Y"}}/{% endcapture %}
+                        <div class="col-md-2 nopadding"><img style="max-width:100%" src="{{ site.baseurl }}/assets/images/{{ work.image }}" alt=""></div>
+                        <div class="col-md-2 nopadding"><img style="max-width:100%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0000-{{ work.image | remove: currentyear }}" alt=""></div>
+                        <div class="col-md-2 nopadding"><img style="max-width:100%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0001-{{ work.image | remove: currentyear }}" alt=""></div>
+                        <div class="col-md-2 nopadding"><img style="max-width:100%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0002-{{ work.image | remove: currentyear }}" alt=""></div>
+                        <div class="col-md-2 nopadding"><img style="max-width:100%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0003-{{ work.image | remove: currentyear }}" alt=""></div>
+                        <div class="col-md-2 nopadding"><img style="max-width:100%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0004-{{ work.image | remove: currentyear }}" alt=""></div>
+                        <div class="col-md-2 nopadding"><img style="max-width:100%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/dreamy-{{ work.image | remove: currentyear }}" alt=""></div>
+                </div><!-- end row -->
+              </a>
             {% endfor %}
         </div><!-- portfolio -->
     </div><!-- portfolio container -->

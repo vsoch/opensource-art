@@ -9,6 +9,11 @@
     padding: 0px;
 } 
 
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
 body { 
     background: #ffffff; 
     margin: 0; 
