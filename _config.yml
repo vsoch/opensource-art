@@ -33,6 +33,10 @@ collections:
       output: true
       permalink: /questions/:title/
 
+exclude: 
+  - 'deepdream'
+  - '_site'
+
 ### CONTACT SETTINGS ###
 
 # Social networks usernames. Many more available: google-plus, flickr, linkedin, etc). Shown in footer.
