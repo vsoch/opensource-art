@@ -110,6 +110,7 @@ opensourceart: &opensourceart
         echo "3. Starting opensource-art container"
         docker run --name osart  --entrypoint bash -dt "${CONTAINER_NAME}:${DOCKER_TAG}"
         docker exec osart mkdir -p /data/inputs
+        docker exec osart mkdir -p /data/outputs
         for image in $(cat ${OPENSOURCEART_NEW_WORKS})
             do
                 echo " === $image === "
@@ -197,7 +198,7 @@ jobs:
                     # either checkout github pages, or create orphan
                     git checkout gh-pages || git checkout --orphan gh-pages
                     # Save all previous content, so we don't pull and re-generate
-                    cp -R docs ../ghpages
+                    cp -R . ../ghpages
                     git rm -rf .
                     # ensure that github pages are ignored
                     mkdir -p .circleci && cp -a ../src/.circleci/. .circleci/.
