@@ -110,6 +110,7 @@ opensourceart: &opensourceart
         echo "3. Starting opensource-art container"
         docker run --name osart  --entrypoint bash -dt "${CONTAINER_NAME}:${DOCKER_TAG}"
         docker exec osart mkdir -p /data/inputs
+        docker exec osart mkdir -p /data/outputs
         for image in $(cat ${OPENSOURCEART_NEW_WORKS})
             do
                 echo " === $image === "
