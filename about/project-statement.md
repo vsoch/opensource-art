@@ -52,3 +52,10 @@ Art is created and hung on walls to visually enjoy. There is an expectation of m
 that emerges from writing code. It is the ultimate quiet expression of an individual's soul, and approached with the same kind of intense
 focus as the artist. And if they do a good job? Ironically you don't notice anything at all, but you appreciate the product of the labor.
 Thus, this project is beautiful because it captures more than one kind of beauty. This is the ultimate combination of open source practices, fun, and community, and we hope that you enjoy the gallery and possibly contribute to it.
+
+# Personal Statements
+
+For personal statements from the programmer and artist, please see below.
+
+ - [Natacha Sochat](personal-statement-nsochat.md)
+ - [Vanessa Sochat](personal-statement-vsochat.md)
