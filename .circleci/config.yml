@@ -172,9 +172,9 @@ jobs:
 
   gallery:
     <<: *defaults
+    working_directory: /tmp/src
     steps:
-      - attach_workspace:
-          at: /tmp
+      - checkout
       - setup_remote_docker
       - run: *dockerenv
       - run: *dockerload
@@ -185,6 +185,7 @@ jobs:
           no_output_timeout: 40m
           command: |
             source ${BASH_ENV}
+            cd /tmp/src && python3 -m unittest tests.test_works
             cd /tmp
             echo "Present working directory is ${PWD}"
             ls
@@ -207,6 +208,11 @@ jobs:
                     # Add new images to gallery
                     count=$(cat ${OPENSOURCEART_NEW_WORKS} | wc -l)
                     echo "Found ${count} new works!"
+                    # Only continue if new images present
+                    if [ "$count" -eq "0" ]; then 
+                        echo "No new works detected! Canceling PR."
+                        exit 1
+                    fi
                     # For each new work, copy to the gallery, under folder with same name
                     mkdir -p _gallery
                     for work in $(cat ${OPENSOURCEART_NEW_WORKS})
@@ -264,12 +270,8 @@ workflows:
 
       # Push the gallery back to Github pages
       - gallery:
-          requires:
-            - build
-            - update_cache
           filters:
             branches:
               only: master
-              ignore: gh-pages
             tags:
               only: /.*/
