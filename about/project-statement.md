@@ -43,4 +43,12 @@ By way of continuous integration and reproducible linux containeres, each day, a
 
 ### An Open Source Art Story
 
-Over time, the gallery grows in size and complexity. We generate a new image each day, and so the earlier pieces become part of the later ones. The earliest contributions start the development of a story, and community members can contribute new textures (or similar) at any frequency to continue developing the story. This is the ultimate combination of open source practices, fun, and community, and we hope that you enjoy the gallery and possibly contribute to it.
+Over time, the gallery grows in size and complexity. We generate a new set of images with each contribution, and the development of the gallery
+is only limited to the ability of the algorithms and programmer. Improvements to the gallery might include:
+
+ - Mixing previous images into the generation of new, so that earlier pieces become part of the later ones. The earliest contributions start the development of a story, and community members can contribute new textures (or similar) at any frequency to continue developing the story. 
+
+Art is created and hung on walls to visually enjoy. There is an expectation of meaning. What goes unnoticed is the beauty and complexity
+that emerges from writing code. It is the ultimate quiet expression of an individual's soul, and approached with the same kind of intense
+focus as the artist. And if they do a good job? Ironically you don't notice anything at all, but you appreciate the product of the labor.
+Thus, this project is beautiful because it captures more than one kind of beauty. This is the ultimate combination of open source practices, fun, and community, and we hope that you enjoy the gallery and possibly contribute to it.
