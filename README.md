@@ -61,6 +61,8 @@ git clone https://www.github.com/<username>/opensource-art
 cd opensource-art
 ```
 
+## Template
+
 Next, copy one of the current works pages under [_works](docs/_works), and give it a unique name that is all lowercase
 and doesn't have any special characters. The following fields have suggestions for their content:
 

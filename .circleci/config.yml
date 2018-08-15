@@ -263,6 +263,7 @@ workflows:
           filters:
             branches:
               ignore: gh-pages
+              ignore: master
             tags:
               only: /.*/
 
@@ -273,6 +274,7 @@ workflows:
             branches:
               ignore: /docs?/.*/
               ignore: gh-pages
+              ignore: master
             tags:
               only: /.*/
 
@@ -285,6 +287,7 @@ workflows:
           filters:
             branches:
               ignore: gh-pages
+              ignore: master
 
       # Push the gallery back to Github pages
       - deploy:
@@ -293,5 +296,6 @@ workflows:
           filters:
             branches:
               ignore: gh-pages
+              ignore: master
             tags:
               only: /.*/
