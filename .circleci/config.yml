@@ -257,7 +257,7 @@ jobs:
                             markdown="${work%.*}.md"
                             cp /tmp/src/docs/_works/${markdown} _works/                
                             # Copy the original image
-                            cp /tmp/src/docs/assets/images/${work} assets/images/ 
+                            cp /tmp/src/docs/assets/images/${work} assets/images/${work} 
                         else
                             echo "Cannot find expected ${gallery_image}, skipping copy!"
                         fi
