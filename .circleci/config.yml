@@ -126,10 +126,10 @@ opensourceart: &opensourceart
                 echo "docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --frames 3 --scale-coeff 0.4"
                 docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --frames 3 --scale-coeff 0.4
                 # Randomly select folder
-                folder_guide=$(ls docs/assets/images |sort -R |tail -1)
+                folder_guide=$(ls docs/assets/images | shuf -n 1)
                 echo "Selected folder $folder_guide"
                 # Randomly select an image as a guide from folder
-                image_guide=$(ls docs/assets/images/${folder_guide}/*.jpg |sort -R |tail -1)
+                image_guide=$(ls docs/assets/images/${folder_guide}/*.jpg | shuf -n 1)
                 # Generate guided image!
                 echo "Generating art with image guide, ${image_guide} <3 ${image_name}"
                 echo "docker run -v $PWD:/data vanessa/deepdream:0.0.8 --input /data/inputs/${image_name} --guide "${image_guide}" --frames 0"
