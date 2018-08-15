@@ -137,8 +137,11 @@ opensourceart: &opensourceart
                 echo "docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --guide "/data/inputs/${guide_name}" --frames 0"
                 docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --guide "/data/inputs/${guide_name}" --frames 0
                 # Copy markdown to output folder
-                markdown="${image%.*}.md"
-                cp /tmp/src/docs/_works/${markdown} /tmp/gallery
+                markdown="${image%.*}.md" 
+                markdown_year=$(dirname ${markdown})
+                markdown_folder=/tmp/gallery/${markdown_year}
+                mkdir -p ${markdown_folder}
+                cp /tmp/src/docs/_works/${markdown} ${markdown_folder}
                 # Copy original to output folder
                 cp /tmp/src/docs/assets/images/${image} /tmp/gallery
         done
@@ -255,7 +258,10 @@ jobs:
                             cp /tmp/gallery/outputs/*${uri}* "${gallery_folder}"
                             # Copy the original markdown post
                             markdown="${work%.*}.md"
-                            cp /tmp/src/docs/_works/${markdown} _works/                
+                            markdown_year=$(dirname ${markdown})
+                            markdown_folder=_works/${markdown_year}
+                            mkdir -p ${markdown_folder}
+                            cp /tmp/src/docs/_works/${markdown} ${markdown_folder}
                             # Copy the original image
                             cp /tmp/src/docs/assets/images/${work} assets/images/${work} 
                         else
