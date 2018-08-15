@@ -126,6 +126,8 @@ opensourceart: &opensourceart
                 # Copy markdown to output folder
                 markdown="${image%.*}.md"
                 cp /tmp/src/docs/_works/${markdown} /tmp/gallery
+                # Copy original to output folder
+                cp /tmp/src/docs/assets/images/${image} /tmp/gallery
         done
         echo "4. Copying art back to the gallery!"
         mkdir -p /tmp/gallery
@@ -240,6 +242,8 @@ jobs:
                             # Copy the original markdown post
                             markdown="${work%.*}.md"
                             cp /tmp/src/docs/_works/${markdown} _works/                
+                            # Copy the original image
+                            cp /tmp/src/docs/assets/images/${work} assets/images/ 
                         else
                             echo "Cannot find expected ${gallery_image}, skipping copy!"
                         fi
