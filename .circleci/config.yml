@@ -134,8 +134,8 @@ opensourceart: &opensourceart
                 echo "Generating art with image guide, ${image_guide} <3 ${image_name}"
                 guide_name=$(basename $image_guide)
                 docker cp ${image_guide} osart:/data/inputs/${guide_name}
-                echo "docker exec osart --input /data/inputs/${image_name} --guide "/data/inputs/${guide_name}" --frames 0"
-                docker exec osart --input /data/inputs/${image_name} --guide "/data/inputs/${guide_name}" --frames 0
+                echo "docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --guide "/data/inputs/${guide_name}" --frames 0"
+                docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --guide "/data/inputs/${guide_name}" --frames 0
                 # Copy markdown to output folder
                 markdown="${image%.*}.md"
                 cp /tmp/src/docs/_works/${markdown} /tmp/gallery
