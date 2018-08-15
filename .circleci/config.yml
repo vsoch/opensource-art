@@ -111,6 +111,8 @@ opensourceart: &opensourceart
         docker run --name osart  --entrypoint bash -dt "${CONTAINER_NAME}:${DOCKER_TAG}"
         docker exec osart mkdir -p /data/inputs
         docker exec osart mkdir -p /data/outputs
+        # Create output directory for artifacts (gallery)
+        mkdir -p /tmp/gallery
         for image in $(cat ${OPENSOURCEART_NEW_WORKS})
             do
                 echo " === $image === "
@@ -121,12 +123,16 @@ opensourceart: &opensourceart
                 docker cp docs/assets/images/$image osart:/data/inputs/${image_name}
                 echo "docker exec osart /bin/bash /run.sh /data/inputs/${image_name}"
                 docker exec osart /bin/bash /run.sh /data/inputs/${image_name}
+                # Copy markdown to output folder
+                markdown="${image%.*}.md"
+                cp /tmp/src/docs/_works/${markdown} /tmp/gallery
         done
         echo "4. Copying art back to the gallery!"
         mkdir -p /tmp/gallery
         # copies to /tmp/gallery/outputs
         docker cp osart:/data/outputs /tmp/gallery
         ls /tmp/gallery/outputs
+        ls /tmp/gallery
         docker stop osart
 
 
@@ -159,6 +165,9 @@ jobs:
             - OSART.new
             - src
             - gallery
+      - store_artifacts:
+          path: /tmp/gallery
+          destination: opensource-art
 
   update_cache:
     <<: *defaults
@@ -170,7 +179,7 @@ jobs:
           paths:
             - /tmp/cache/container.tar.gz
 
-  gallery:
+  deploy:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -267,12 +276,20 @@ workflows:
             tags:
               only: /.*/
 
-      # Push the gallery back to Github pages
-      - gallery:
+      # Hold to manually approve art
+      - hold:
           type: approval
           requires:
-            - build
-            - update_cache
+           - build
+           - update_cache
+          filters:
+            branches:
+              ignore: gh-pages
+
+      # Push the gallery back to Github pages
+      - deploy:
+          requires:
+            - hold
           filters:
             branches:
               ignore: gh-pages
