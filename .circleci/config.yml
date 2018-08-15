@@ -165,6 +165,7 @@ jobs:
           key: docker-v1-{{ .Branch }}
           paths:
             - /tmp/cache/container.tar.gz
+      - run: *dockerload
       - checkout
       - setup_remote_docker
       - run: *dockerenv
