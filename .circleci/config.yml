@@ -37,7 +37,7 @@ dockerenv: &dockerenv
     command: |
         # If not set, define DOCKER_TAG
         if [ ! -n "${DOCKER_TAG:-}" ]; then
-            DOCKER_TAG=0.0.6
+            DOCKER_TAG=0.0.8
         fi
         if [ ! -n "${CONTAINER_NAME:-}" ]; then
             CONTAINER_NAME=vanessa/deepdream
@@ -122,7 +122,18 @@ opensourceart: &opensourceart
                 echo "docker cp docs/assets/images/$image osart:/data/inputs/${image_name}"
                 docker cp docs/assets/images/$image osart:/data/inputs/${image_name}
                 echo "docker exec osart /bin/bash /run.sh /data/inputs/${image_name}"
-                docker exec osart /bin/bash /run.sh /data/inputs/${image_name}
+                # Generate the dreamy and frames
+                echo "docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --frames 3 --scale-coeff 0.4"
+                docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --frames 3 --scale-coeff 0.4
+                # Randomly select folder
+                folder_guide=$(ls docs/assets/images |sort -R |tail -1)
+                echo "Selected folder $folder_guide"
+                # Randomly select an image as a guide from folder
+                image_guide=$(ls docs/assets/images/${folder_guide}/*.jpg |sort -R |tail -1)
+                # Generate guided image!
+                echo "Generating art with image guide, ${image_guide} <3 ${image_name}"
+                echo "docker run -v $PWD:/data vanessa/deepdream:0.0.8 --input /data/inputs/${image_name} --guide "${image_guide}" --frames 0"
+                docker run -v $PWD:/data vanessa/deepdream:0.0.8 --input /data/inputs/${image_name} --guide "${image_guide}" --frames 0
                 # Copy markdown to output folder
                 markdown="${image%.*}.md"
                 cp /tmp/src/docs/_works/${markdown} /tmp/gallery
