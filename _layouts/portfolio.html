@@ -39,9 +39,9 @@ layout: default
   }
 }
 </style>
-
         {% if include.title %}<h3>{{ include.title }}</h3>{% endif %}
-        {% for work in site.works limit:6 %}
+        {% assign items = site.works | sort: 'date' %}
+        {% for work in items limit: 10 %}
         <div class="row">
             <div class="col-md-12">
                 <a href="{{  work.url | prepend: site.baseurl }}" data-animate="fadeInUp">
