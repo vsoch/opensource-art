@@ -1,0 +1,24 @@
+---
+layout: default
+description: "Archive"
+permalink: /archive/
+---
+
+<div class="container">
+<!--{% include scrolltop.html %}
+uncomment when needs scrolling
+-->
+<div class="row" style="margin:25px; padding:30px">
+   {% for work in site.works %}
+       {% assign currentDate = work.date | date: "%Y" %}
+       {% if currentDate != myDate %}
+           {% unless forloop.first %}</ul>{% endunless %}
+           <h1 style="margin-top:20px; margin-bottom:10px">{{ currentDate }}</h1>
+           <ul>
+           {% assign myDate = currentDate %}
+       {% endif %}
+       <li><a href="{{ site.baseurl }}{{ work.url }}"><span>{{ work.date | date: "%B %-d, %Y" }}</span> - {{ work.title }}</a></li>
+       {% if forloop.last %}</ul>{% endif %}
+   {% endfor %}
+</div>
+</div>

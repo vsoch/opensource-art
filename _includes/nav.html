@@ -13,6 +13,7 @@
     <div class="navbar-collapse collapse navbar-right">
       <ul class="nav navbar-nav">
         <li {% if page.title == "Home" %}class="active"{% endif %}><a href="{{"/" | prepend: site.baseurl }}">HOME</a></li>
+        <li {% if page.title == "Archive" %}class="active"{% endif %}><a href="{{"/archive/" | prepend: site.baseurl }}">ARCHIVE</a></li>
         <li {% if page.title == "About" %}class="active"{% endif %}><a href="{{"/about/" | prepend: site.baseurl }}">ABOUT</a></li>
         <li {% if page.title == "Contribute" %}class="active"{% endif %}><a href="{{"/contribute/" | prepend: site.baseurl }}">CONTRIBUTE</a></li>
         <li {% if page.title == "Contact" %}class="active"{% endif %}><a href="https://www.github.com/vsoch/opensource-art/issues" target="_blank">HELP</a></li>
