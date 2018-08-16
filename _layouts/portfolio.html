@@ -42,9 +42,9 @@ layout: default
 
         {% if include.title %}<h3>{{ include.title }}</h3>{% endif %}
         {% for work in site.works limit:6 %}
-        <div class="row isotope">
+        <div class="row">
             <div class="col-md-12">
-                <a href="{{  work.url | prepend: site.baseurl }}" class="dmbutton a2 isotope-item" data-animate="fadeInUp">
+                <a href="{{  work.url | prepend: site.baseurl }}" data-animate="fadeInUp">
                     {% capture currentyear %}{{ work.date | date: "%Y"}}/{% endcapture %}
                         <img style="width:16.3%" src="{{ site.baseurl }}/assets/images/{{ work.image }}" alt="">
                          <img style="width:16.3%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0000-{{ work.image | remove: currentyear }}" alt="">
