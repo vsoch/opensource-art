@@ -26,16 +26,11 @@ collections:
   works:
       output: true
       permalink: /works/:title/
-  gallery:
-      output: true
-      permalink: /gallery/:path/
-  questions:
-      output: true
-      permalink: /questions/:title/
 
 exclude: 
   - 'deepdream'
   - '_site'
+
 
 ### CONTACT SETTINGS ###
 

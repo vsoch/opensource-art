@@ -36,21 +36,21 @@ layout: default
 </div>
 <div class="container-fluid">
      <div class="row" style="text-align: center; content-align:center; padding-top:50px">
+        <div class="col-md-12">
         {% capture currentyear %}{{ page.date | date: "%Y"}}/{% endcapture %}
         {% capture imagename %}{{ page.image | remove: currentyear }}{% endcapture %}
-        <div class="col-md-12">
-            <a href="{{ site.baseurl }}/assets/images/{{ page.image }}" >
-            <img src="{{ site.baseurl }}/assets/images/{{ page.image }}" alt="image"/></a>
-        <a href="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0000-{{ imagename }}" >
-          <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0000-{{ imagename }}" alt="image" /></a>
-        <a href="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0001-{{ imagename }}" >
-          <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0001-{{ imagename }}"  alt="image" /></a>
-        <a href="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0002-{{ imagename }}">
-          <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0002-{{ imagename }}"  alt="image" /></a>
-        <a href="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/guided-{{ imagename }}">
-          <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/guided-{{ imagename }}"  alt="image" /></a>
-        <a href="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/dreamy-{{ imagename }}">
-          <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/dreamy-{{ imagename }}"  alt="image" /></a>
-        </div>
-    </div>
+        {% assign count = 1 %}
+        {% for image in site.static_files %}
+            {% if image.path contains imagename %}
+            <a href="{{ site.baseurl }}{{ image.path }}"><img style="max-width:16%"  src="{{ site.baseurl }}{{ image.path }}" alt="image" /></a>
+            {% assign newrow = count | modulo:6 %}
+                {% if newrow == 0 %}
+                         </div>
+                         <div class="row" style="text-align: center; content-align:center; padding-top:50px">
+                         {% capture count %}{{ count | plus:1 }}{% endcapture %}
+                     {% endif %}
+                {% endif %}
+           {% endfor %}
+         </div>
+     </div>
 </div>

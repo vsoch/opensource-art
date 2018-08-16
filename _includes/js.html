@@ -7,6 +7,13 @@
 <script src="{{ "/assets/js/jquery.isotope.min.js" | prepend: site.baseurl }}"></script>
 <script src="{{ "/assets/js/custom.js" | prepend: site.baseurl }}"></script>
 <script>
+// Hide images that don't exist (if not generated)
+document.addEventListener("DOMContentLoaded", function(event) {
+   document.querySelectorAll('img').forEach(function(img){
+  	img.onerror = function(){this.style.display='none';};
+   })
+});
+
 // Portfolio
 (function($) {
 	"use strict";
