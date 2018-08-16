@@ -254,14 +254,14 @@ jobs:
                         exit 1
                     fi
                     # For each new work, copy to the gallery, under folder with same name
-                    mkdir -p _gallery
+                    mkdir -p gallery
                     for work in $(cat ${OPENSOURCEART_NEW_WORKS})
                         do
                         filename=$(basename $work)
                         extension="${filename##*.}"
                         uri="${filename%.*}"
                         # Create the gallery folder
-                        gallery_folder="_gallery/${uri}"
+                        gallery_folder="gallery/${uri}"
                         mkdir -p ${gallery_folder}
                         gallery_image="/tmp/gallery/outputs/dreamy-${filename}"
                         if [ -f "${gallery_image}" ]
