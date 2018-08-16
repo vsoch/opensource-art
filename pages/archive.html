@@ -13,7 +13,7 @@ uncomment when needs scrolling
        {% assign currentDate = work.date | date: "%Y" %}
        {% if currentDate != myDate %}
            {% unless forloop.first %}</ul>{% endunless %}
-           <h1 style="margin-top:20px; margin-bottom:10px">{{ currentDate }}</h1>
+           <h1 style="margin-top:20px; margin-bottom:10px; color: #666">{{ currentDate }}</h1>
            <ul>
            {% assign myDate = currentDate %}
        {% endif %}
