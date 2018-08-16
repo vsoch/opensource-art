@@ -4,23 +4,53 @@ layout: default
 
 {{ content }}
 
-<div id="portfoliowrap">
-    <div class="portfolio-centered">
+<style>
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+/* Create four equal columns that sits next to each other */
+.column {
+  flex: 25%;
+  max-width: 25%;
+  padding: 0 4px;
+}
+
+.column img {
+  margin-top: 8px;
+  vertical-align: middle;
+}
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media screen and (max-width: 800px) {
+  .column {
+    flex: 50%;
+    max-width: 50%;
+  }
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column {
+    flex: 100%;
+    max-width: 100%;
+  }
+}
+</style>
+
         {% if include.title %}<h3>{{ include.title }}</h3>{% endif %}
-        <div class="recentitems portfolio">
-            {% for work in site.works limit:6 %}
-                <a href="{{  work.url | prepend: site.baseurl }}" class="dmbutton a2" data-animate="fadeInUp">
-                <div class="row nopadding">
+        {% for work in site.works limit:6 %}
+        <div class="row isotope">
+            <div class="col-md-12">
+                <a href="{{  work.url | prepend: site.baseurl }}" class="dmbutton a2 isotope-item" data-animate="fadeInUp">
                     {% capture currentyear %}{{ work.date | date: "%Y"}}/{% endcapture %}
-                        <div class="col-md-2 nopadding"><img style="max-width:100%" src="{{ site.baseurl }}/assets/images/{{ work.image }}" alt=""></div>
-                        <div class="col-md-2 nopadding"><img style="max-width:100%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0000-{{ work.image | remove: currentyear }}" alt=""></div>
-                        <div class="col-md-2 nopadding"><img style="max-width:100%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0001-{{ work.image | remove: currentyear }}" alt=""></div>
-                        <div class="col-md-2 nopadding"><img style="max-width:100%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0002-{{ work.image | remove: currentyear }}" alt=""></div>
-                        <div class="col-md-2 nopadding"><img style="max-width:100%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/guided-{{ work.image | remove: currentyear }}" alt=""></div>
-                        <div class="col-md-2 nopadding"><img style="max-width:100%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/dreamy-{{ work.image | remove: currentyear }}" alt=""></div>
-                </div><!-- end row -->
-              </a>
+                        <img style="width:16.3%" src="{{ site.baseurl }}/assets/images/{{ work.image }}" alt="">
+                         <img style="width:16.3%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0000-{{ work.image | remove: currentyear }}" alt="">
+                        <img style="width:16.3%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0001-{{ work.image | remove: currentyear }}" alt="">
+                        <img style="width:16.3%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0002-{{ work.image | remove: currentyear }}" alt="">
+                        <img style="width:16.3%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/guided-{{ work.image | remove: currentyear }}" alt="">
+                        <img style="width:16.3%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/dreamy-{{ work.image | remove: currentyear }}" alt="">
             {% endfor %}
-        </div><!-- portfolio -->
-    </div><!-- portfolio container -->
-</div><!--/Portfoliowrap -->
+      </div></div>

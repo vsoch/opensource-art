@@ -27,32 +27,30 @@ layout: default
             {% if page.tags %}<p><b>Tags:</b> {{ page.tags }}</p>{% endif %}
             {% if page.affiliation %}<p><b>Affiliation:</b> {{ page.affiliation }}</p>{% endif %}
         </div>
+
         <div class="col-lg-4 col-lg-offset-1" style="margin-bottom:50px">
             <a href="{{ site.baseurl }}/assets/images/{{ page.image }}" target="_blank">
             <img src="{{ site.baseurl }}/assets/images/{{ page.image }}" width="400px"></img></a>
         </div>
     </div><! --/row -->
-     <div class="row">
+</div>
+<div class="container-fluid">
+     <div class="row" style="text-align: center; content-align:center; padding-top:50px">
         {% capture currentyear %}{{ page.date | date: "%Y"}}/{% endcapture %}
         {% capture imagename %}{{ page.image | remove: currentyear }}{% endcapture %}
-        <div class="col-md-4 nopadding">
-        <a href="{{ site.baseurl }}/assets/images/{{ page.image }}" style="100%">
-          <img src="{{ site.baseurl }}/assets/images/{{ page.image }}" alt="image" /></a>
-        <a href="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0000-{{ imagename }}" width="100%">
+        <div class="col-md-12">
+            <a href="{{ site.baseurl }}/assets/images/{{ page.image }}" >
+            <img src="{{ site.baseurl }}/assets/images/{{ page.image }}" alt="image"/></a>
+        <a href="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0000-{{ imagename }}" >
           <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0000-{{ imagename }}" alt="image" /></a>
-        </div>
-        <div class="col-md-4 nopadding">
-        <a href="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0001-{{ imagename }}">
-          <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0001-{{ imagename }}" alt="image" /></a>
+        <a href="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0001-{{ imagename }}" >
+          <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0001-{{ imagename }}"  alt="image" /></a>
         <a href="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0002-{{ imagename }}">
-          <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0002-{{ imagename }}" alt="image" /></a>
-        </div>
-        <div class="col-md-4 nopadding">
+          <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/frame-0002-{{ imagename }}"  alt="image" /></a>
         <a href="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/guided-{{ imagename }}">
-          <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/guided-{{ imagename }}" alt="image" /></a>
+          <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/guided-{{ imagename }}"  alt="image" /></a>
         <a href="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/dreamy-{{ imagename }}">
-          <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/dreamy-{{ imagename }}" alt="image" /></a>
-        </div>
+          <img src="{{ site.baseurl }}/gallery/{{ imagename | remove: ".jpg" }}/dreamy-{{ imagename }}"  alt="image" /></a>
         </div>
     </div>
-</div><! --/container>
+</div>
