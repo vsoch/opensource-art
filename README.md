@@ -101,4 +101,4 @@ The image path should be under the root "assets/images" in the repository. Thus 
 This is important for programmatic things, and it will be checked and tested.
 
 Finally, notice that the (more verbose if you like) description is at the bottom, under everything. Feel
-free to write as little or as much as you like here!
+free to write as little or as much as you like here.
