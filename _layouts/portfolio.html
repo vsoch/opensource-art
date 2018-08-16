@@ -40,14 +40,13 @@ layout: default
 }
 </style>
         {% if include.title %}<h3>{{ include.title }}</h3>{% endif %}
-        {% assign items = site.works | sort: 'date' %}
-        {% for work in items limit: 10 %}
+        {% for work in site.works limit:10 %}
+        {% capture currentyear %}{{ work.date | date: "%Y"}}/{% endcapture %}
         <div class="row">
             <div class="col-md-12">
                 <a href="{{  work.url | prepend: site.baseurl }}" data-animate="fadeInUp">
-                    {% capture currentyear %}{{ work.date | date: "%Y"}}/{% endcapture %}
                         <img style="width:16.3%" src="{{ site.baseurl }}/assets/images/{{ work.image }}" alt="">
-                         <img style="width:16.3%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0000-{{ work.image | remove: currentyear }}" alt="">
+                        <img style="width:16.3%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0000-{{ work.image | remove: currentyear }}" alt="">
                         <img style="width:16.3%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0001-{{ work.image | remove: currentyear }}" alt="">
                         <img style="width:16.3%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/frame-0002-{{ work.image | remove: currentyear }}" alt="">
                         <img style="width:16.3%" src="{{ site.baseurl }}/gallery/{{ work.image | remove: ".jpg" | remove: currentyear }}/guided-{{ work.image | remove: currentyear }}" alt="">
