@@ -37,7 +37,7 @@ dockerenv: &dockerenv
     command: |
         # If not set, define DOCKER_TAG
         if [ ! -n "${DOCKER_TAG:-}" ]; then
-            DOCKER_TAG=0.0.8
+            DOCKER_TAG=0.0.9
         fi
         if [ ! -n "${CONTAINER_NAME:-}" ]; then
             CONTAINER_NAME=vanessa/deepdream
@@ -134,8 +134,21 @@ opensourceart: &opensourceart
                 echo "Generating art with image guide, ${image_guide} <3 ${image_name}"
                 guide_name=$(basename $image_guide)
                 docker cp ${image_guide} osart:/data/inputs/${guide_name}
-                echo "docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --guide "/data/inputs/${guide_name}" --frames 0"
-                docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --guide "/data/inputs/${guide_name}" --frames 0
+                # For smaller images, save layers
+                width=$(docker exec osart python /dims.py --image /data/inputs/${image_name} --width)
+                height=$(docker exec osart python /dims.py --image /data/inputs/${image_name} --height)
+                echo "${image_name}"
+                echo "Height: $height"
+                echo "Width: $width"
+                if [ "$width" -lt 256 ] || [ "$height" -lt 256 ] ; then
+                    echo "Smaller image detected! Will also generate layers"
+                    echo "docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --guide "/data/inputs/${guide_name}" --frames 0 --layers"
+                    docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --guide "/data/inputs/${guide_name}" --frames 0 --layers
+                else
+                    echo "Larger image detected! Skipping layer generation"
+                    echo "docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --guide "/data/inputs/${guide_name}" --frames 0"
+                    docker exec osart /bin/bash /run.sh --input /data/inputs/${image_name} --guide "/data/inputs/${guide_name}" --frames 0
+                fi
                 # Copy markdown to output folder
                 markdown="${image%.*}.md" 
                 markdown_year=$(dirname ${markdown})
