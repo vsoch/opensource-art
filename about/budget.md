@@ -4,7 +4,7 @@ Prepared by Natacha Sochat. The open source web portion of this work does not ha
 
 
 | Item | Quantity | Price | Total |
------------------------------------
+|------|----------|-------|--------|
 | Wood stretchers, 5 foot stretchers (2/painting) | total 8 | 4 for $70.00 | $140.00 |
 | 6 foot stretchers (2/painting) | total 8 | 4@ $85.00 | $170.00 | 
 | Canvas cost: 84" length x yards | 8 yards | | $125.00 | 
