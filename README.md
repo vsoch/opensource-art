@@ -70,7 +70,7 @@ and doesn't have any special characters. The following fields have suggestions f
  - *image* must be defined, as some subfolder path under [assets/images/](docs/assets/images). We recommend that you put the image in the folder for the corresponding year, and that it is named based on `<artist>-<title>.jpg`. We have not tested beyond jpg so we are currently requiring it! (see example below).
  - *layout* you must leave as "work"
  - *tags* are up to you! These should describe your contribution, separated by commas.
- - *date* should be in the format YYYY-MM-DD HH-MM:SS
+ - *date* should be in the format YYYY-MM-DD HH:MM:SS
  - *author* is your name (or alias), although it's not required
  - *affiliation* (not shown in the example) can be your institution, or an affiliation that you have
 
