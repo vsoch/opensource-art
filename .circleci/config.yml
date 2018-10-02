@@ -302,7 +302,6 @@ workflows:
               ignore: 
                 - gh-pages
                 - /docs?/.*/
-                - master
             tags:
               only: /.*/
 
@@ -314,31 +313,17 @@ workflows:
               ignore: 
                 - gh-pages
                 - /docs?/.*/
-                - master
             tags:
               only: /.*/
 
-      # Hold to manually approve art
-      - hold:
-          type: approval
-          requires:
-           - build
-           - update_cache
-          filters:
-            branches:
-              ignore: 
-                - gh-pages
-                - /docs?/.*/
-                - master
       # Push the gallery back to Github pages
       - deploy:
           requires:
-            - hold
+            - build
+            - update_cache
           filters:
             branches:
-              ignore: 
-                - gh-pages
-                - /docs?/.*/
+              only: 
                 - master
             tags:
               only: /.*/
