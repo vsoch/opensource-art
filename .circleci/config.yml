@@ -276,6 +276,7 @@ jobs:
                             mkdir -p ${markdown_folder}
                             cp /tmp/src/docs/_works/${markdown} ${markdown_folder}
                             # Copy the original image
+                            mkdir -p assets/images/${markdown_year}
                             cp /tmp/src/docs/assets/images/${work} assets/images/${work} 
                         else
                             echo "Cannot find expected ${gallery_image}, skipping copy!"
@@ -302,6 +303,7 @@ workflows:
               ignore: 
                 - gh-pages
                 - /docs?/.*/
+                - master
             tags:
               only: /.*/
 
@@ -313,17 +315,31 @@ workflows:
               ignore: 
                 - gh-pages
                 - /docs?/.*/
+                - master
             tags:
               only: /.*/
 
+      # Hold to manually approve art
+      - hold:
+          type: approval
+          requires:
+           - build
+           - update_cache
+          filters:
+            branches:
+              ignore: 
+                - gh-pages
+                - /docs?/.*/
+                - master
       # Push the gallery back to Github pages
       - deploy:
           requires:
-            - build
-            - update_cache
+            - hold
           filters:
             branches:
-              only: 
+              ignore: 
+                - gh-pages
+                - /docs?/.*/
                 - master
             tags:
               only: /.*/
