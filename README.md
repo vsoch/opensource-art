@@ -29,6 +29,7 @@ the community, and many eyes on the code squash the bugs.
 Under this same model, many small artistic contributions can create unexpected beauty.
 
 ### 1. The Human Component
+
 The base of the entire gallery, whether it be code that drives its generation or the human hand, starts with a human component. 
 How does this work?
 
