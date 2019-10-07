@@ -276,6 +276,7 @@ jobs:
                             mkdir -p ${markdown_folder}
                             cp /tmp/src/docs/_works/${markdown} ${markdown_folder}
                             # Copy the original image
+                            mkdir -p assets/images/${markdown_year}
                             cp /tmp/src/docs/assets/images/${work} assets/images/${work} 
                         else
                             echo "Cannot find expected ${gallery_image}, skipping copy!"
